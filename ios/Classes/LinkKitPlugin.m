@@ -3,7 +3,7 @@
 @implementation LinkKitPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"link_kit"
+      methodChannelWithName:@"v7lin.github.io/link_kit"
             binaryMessenger:[registrar messenger]];
   LinkKitPlugin* instance = [[LinkKitPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];

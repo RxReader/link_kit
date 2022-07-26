@@ -14,6 +14,7 @@ import java.util.List;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -29,6 +30,8 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
+    private EventChannel linkClickEventChannel;
+    private LinkClickEventHandler linkClickEventHandler;
     private Context applicationContext;
     private ActivityPluginBinding activityPluginBinding;
 
@@ -38,6 +41,9 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
         channel = new MethodChannel(binding.getBinaryMessenger(), "v7lin.github.io/link_kit");
         channel.setMethodCallHandler(this);
+        linkClickEventChannel = new EventChannel(binding.getBinaryMessenger(), "v7lin.github.io/link_kit#click_event");
+        linkClickEventHandler = new LinkClickEventHandler();
+        linkClickEventChannel.setStreamHandler(linkClickEventHandler);
         applicationContext = binding.getApplicationContext();
     }
 
@@ -45,7 +51,30 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
         channel = null;
+        linkClickEventChannel.setStreamHandler(null);
+        linkClickEventChannel = null;
+        linkClickEventHandler = null;
         applicationContext = null;
+    }
+
+    private static class LinkClickEventHandler implements EventChannel.StreamHandler {
+        private EventChannel.EventSink events;
+
+        @Override
+        public void onListen(Object arguments, EventChannel.EventSink events) {
+            this.events = events;
+        }
+
+        @Override
+        public void onCancel(Object arguments) {
+            this.events = null;
+        }
+
+        public void addEvent(String event) {
+            if (events != null) {
+                events.success(event);
+            }
+        }
     }
 
     // --- ActivityAware
@@ -78,8 +107,8 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     public boolean onNewIntent(@NonNull Intent intent) {
         if (isFLKIntent(intent)) {
             final String link = intent.getDataString();
-            if (channel != null) {
-                channel.invokeMethod("onClickLink", link);
+            if (linkClickEventHandler != null) {
+                linkClickEventHandler.addEvent(link);
             }
         }
         return false;

@@ -1,15 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:link_kit/link_kit.dart';
-import 'package:link_kit/link_kit_platform_interface.dart';
-import 'package:link_kit/link_kit_method_channel.dart';
+import 'package:link_kit/src/link.dart';
+import 'package:link_kit/src/link_kit_method_channel.dart';
+import 'package:link_kit/src/link_kit_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockLinkKitPlatform 
+class MockLinkKitPlatform
     with MockPlatformInterfaceMixin
     implements LinkKitPlatform {
+  @override
+  Future<String?> getInitialLink() async {
+    return null;
+  }
 
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
+  Stream<String> linkClickStream() {
+    throw UnimplementedError();
+  }
 }
 
 void main() {
@@ -19,11 +25,10 @@ void main() {
     expect(initialPlatform, isInstanceOf<MethodChannelLinkKit>());
   });
 
-  test('getPlatformVersion', () async {
-    LinkKit linkKitPlugin = LinkKit();
-    MockLinkKitPlatform fakePlatform = MockLinkKitPlatform();
+  test('getInitialLink', () async {
+    final MockLinkKitPlatform fakePlatform = MockLinkKitPlatform();
     LinkKitPlatform.instance = fakePlatform;
   
-    expect(await linkKitPlugin.getPlatformVersion(), '42');
+    expect(await Link.instance.getInitialLink(), null);
   });
 }

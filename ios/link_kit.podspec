@@ -2,9 +2,13 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
 # Run `pod lib lint link_kit.podspec` to validate before publishing.
 #
+
+pubspec = YAML.load_file(File.join('..', 'pubspec.yaml'))
+library_version = pubspec['version'].gsub('+', '-')
+
 Pod::Spec.new do |s|
   s.name             = 'link_kit'
-  s.version          = '0.0.1'
+  s.version          = library_version
   s.summary          = 'Flutter plugin for App/Deep Link.'
   s.description      = <<-DESC
 Flutter plugin for App/Deep Link.
