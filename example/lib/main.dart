@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:link_kit/link_kit.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +18,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  StreamSubscription<String>? _linkClickSubs;
+
+  @override
+  void initState() {
+    super.initState();
+    Link.instance.getInitialLink().then((String? value) {
+      if (kDebugMode) {
+        print('initialLink: $value');
+      }
+    });
+    _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
+      if (kDebugMode) {
+        print('linkClick: $event');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _linkClickSubs?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
