@@ -30,8 +30,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <!-- 固定标志 -->
                 <category android:name="${applicationId}.link_kit.category.FLK"/>
-                <!-- scheme 为必选项，host 为可选项，scheme/host 可自定义 -->
-                <data android:scheme="flk" android:host="link.kit"/>
+                <!-- scheme 为必选项，可自定义 -->
+                <data android:scheme="flk"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

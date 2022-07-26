@@ -118,7 +118,7 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        if (call.method.equals("getInitialLink")) {
+        if ("getInitialLink".equals(call.method)) {
             String initialLink = null;
             final Activity activity = activityPluginBinding.getActivity();
             if (activity != null) {

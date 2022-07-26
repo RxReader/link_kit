@@ -15,8 +15,8 @@ Flutter plugin for App/Deep Link.
         <category android:name="android.intent.category.BROWSABLE"/>
         <!-- 固定标志 -->
         <category android:name="${applicationId}.link_kit.category.FLK"/>
-        <!-- scheme 为必选项，host 为可选项，scheme/host 可自定义 -->
-        <data android:scheme="flk" android:host="link.kit"/>
+        <!-- scheme 为必选项，可自定义 -->
+        <data android:scheme="flk"/>
     </intent-filter>
 </activity>
 ```
@@ -30,6 +30,32 @@ adb shell am start -a android.intent.action.VIEW \
 ```
 
 ## iOS
+
+* 配置
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <!-- 固定标志 -->
+        <string>flk</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <!-- scheme 为必选项，可自定义 -->
+            <string>flk</string>
+        </array>
+    </dict>
+</array>
+```
+
+* 测试
+
+```shell
+xcrun simctl openurl booted flk://link.kit/power
+```
 
 ## Getting Started
 
