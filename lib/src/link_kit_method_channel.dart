@@ -6,9 +6,11 @@ import 'package:link_kit/src/link_kit_platform_interface.dart';
 class MethodChannelLinkKit extends LinkKitPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final MethodChannel methodChannel = const MethodChannel('v7lin.github.io/link_kit');
+  final MethodChannel methodChannel =
+      const MethodChannel('v7lin.github.io/link_kit');
   @visibleForTesting
-  final EventChannel linkClickEventChannel = const EventChannel('v7lin.github.io/link_kit#click_event');
+  final EventChannel linkClickEventChannel =
+      const EventChannel('v7lin.github.io/link_kit#click_event');
 
   @override
   Future<String?> getInitialLink() {
@@ -19,9 +21,8 @@ class MethodChannelLinkKit extends LinkKitPlatform {
 
   @override
   Stream<String> linkClickStream() {
-    _onLinkClickStream ??= linkClickEventChannel
-        .receiveBroadcastStream()
-        .map((dynamic event) {
+    _onLinkClickStream ??=
+        linkClickEventChannel.receiveBroadcastStream().map((dynamic event) {
       return event as String;
     });
     return _onLinkClickStream!;

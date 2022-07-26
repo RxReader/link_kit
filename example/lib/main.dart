@@ -18,6 +18,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String? _initialLink;
   StreamSubscription<String>? _linkClickSubs;
 
   @override
@@ -27,6 +28,9 @@ class _MyAppState extends State<MyApp> {
       if (kDebugMode) {
         print('initialLink: $value');
       }
+      setState(() {
+        _initialLink = value;
+      });
     });
     _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
       if (kDebugMode) {
@@ -47,6 +51,9 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Link Kit'),
+        ),
+        body: Center(
+          child: Text(_initialLink ?? ''),
         ),
       ),
     );

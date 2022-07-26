@@ -13,7 +13,7 @@ abstract class LinkKitPlatform extends PlatformInterface {
   ///
   /// Defaults to [MethodChannelLinkKit].
   static LinkKitPlatform get instance => _instance;
-  
+
   /// Platform-specific implementations should set this with their own
   /// platform-specific class that extends [LinkKitPlatform] when
   /// they register themselves.

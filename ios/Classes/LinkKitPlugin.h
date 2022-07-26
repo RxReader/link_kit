@@ -1,10 +1,10 @@
 #import <Flutter/Flutter.h>
 
-@interface LinkKitPlugin : NSObject<FlutterPlugin>
+@interface LinkKitPlugin : NSObject <FlutterPlugin>
 @end
 
-@interface LinkKitLinkClickEventHandler : NSObject<FlutterStreamHandler>
+@interface LinkKitLinkClickEventHandler : NSObject <FlutterStreamHandler>
 
-- (void)addEvent: (NSString *)event;
+- (void)addEvent:(NSString *)event;
 
 @end

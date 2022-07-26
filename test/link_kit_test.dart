@@ -28,7 +28,7 @@ void main() {
   test('getInitialLink', () async {
     final MockLinkKitPlatform fakePlatform = MockLinkKitPlatform();
     LinkKitPlatform.instance = fakePlatform;
-  
+
     expect(await Link.instance.getInitialLink(), null);
   });
 }

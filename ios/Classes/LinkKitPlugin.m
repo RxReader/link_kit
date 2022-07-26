@@ -5,13 +5,13 @@
     NSString *_initialLink;
 }
 
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
     FlutterEventChannel *linkClickEventChannel = [FlutterEventChannel eventChannelWithName:@"v7lin.github.io/link_kit#click_event" binaryMessenger:[registrar messenger]];
     LinkKitLinkClickEventHandler *linkClickEventHandler = [[LinkKitLinkClickEventHandler alloc] init];
     [linkClickEventChannel setStreamHandler:linkClickEventHandler];
     FlutterMethodChannel *channel = [FlutterMethodChannel
-                                     methodChannelWithName:@"v7lin.github.io/link_kit"
-                                     binaryMessenger:[registrar messenger]];
+        methodChannelWithName:@"v7lin.github.io/link_kit"
+              binaryMessenger:[registrar messenger]];
     LinkKitPlugin *instance = [[LinkKitPlugin alloc] initWithLinkClickEventHandler:linkClickEventHandler];
     [registrar addApplicationDelegate:instance];
     [registrar addMethodCallDelegate:instance channel:channel];
@@ -26,7 +26,7 @@
     return self;
 }
 
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+- (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     if ([@"getInitialLink" isEqualToString:call.method]) {
         result(_initialLink);
     } else {
@@ -48,7 +48,7 @@
     @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"未配置 flk scheme" userInfo:nil];
 }
 
-- (BOOL) isFLKURL:(NSURL *) url {
+- (BOOL)isFLKURL:(NSURL *)url {
     NSString *scheme = [self getFLKURLScheme];
     return [scheme isEqualToString:url.scheme];
 }
@@ -70,7 +70,7 @@
     return [self handleLinkClickEvent:url];
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
     return [self handleLinkClickEvent:url];
 }
 
@@ -96,7 +96,7 @@
     FlutterEventSink _events;
 }
 
-- (FlutterError * _Nullable)onListenWithArguments:(id _Nullable)arguments eventSink:(nonnull FlutterEventSink)events {
+- (FlutterError *_Nullable)onListenWithArguments:(id _Nullable)arguments eventSink:(nonnull FlutterEventSink)events {
     if (_events != nil) {
         return nil;
     }
@@ -104,7 +104,7 @@
     return nil;
 }
 
-- (FlutterError * _Nullable)onCancelWithArguments:(id _Nullable)arguments {
+- (FlutterError *_Nullable)onCancelWithArguments:(id _Nullable)arguments {
     if (_events == nil) {
         return nil;
     }
@@ -112,7 +112,7 @@
     return nil;
 }
 
-- (void)addEvent: (NSString *)event {
+- (void)addEvent:(NSString *)event {
     if (_events != nil) {
         _events(event);
     }
