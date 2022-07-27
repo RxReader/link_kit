@@ -60,3 +60,18 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 xcrun simctl openurl booted flk://link.kit/power
 xcrun simctl openurl booted flks://link.kit/power
 ```
+
+## Flutter
+
+```dart
+    _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
+      if (kDebugMode) {
+        print('linkClick: $event');
+      }
+    });
+    Link.instance.getInitialLink().then((String? value) {
+      if (kDebugMode) {
+        print('initialLink: $value');
+      }
+    });
+```
