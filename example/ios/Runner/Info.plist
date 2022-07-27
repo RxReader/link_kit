@@ -32,6 +32,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>flk</string>
+				<string>flks</string>
 			</array>
 		</dict>
 	</array>

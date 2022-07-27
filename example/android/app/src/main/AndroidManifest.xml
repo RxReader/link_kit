@@ -32,6 +32,8 @@
                 <category android:name="${applicationId}.link_kit.category.FLK"/>
                 <!-- scheme 为必选项，可自定义 -->
                 <data android:scheme="flk"/>
+                <!-- 可定义多个 -->
+                <data android:scheme="flks"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

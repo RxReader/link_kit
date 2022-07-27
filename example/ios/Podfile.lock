@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - link_kit (0.0.1):
+  - link_kit (0.0.2):
     - Flutter
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  link_kit: bb704dbc072173ec0c6057e59ba9c05fbf5add0a
+  link_kit: 62a55dfb4af3d468e493bbe06a7c35fd8f1da5a7
 
 PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 

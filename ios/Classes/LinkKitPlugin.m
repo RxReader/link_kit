@@ -34,14 +34,19 @@
     }
 }
 
-- (NSString *)getFLKURLScheme {
+- (NSArray *)getFLKURLSchemes {
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
     NSArray *types = [infoDic objectForKey:@"CFBundleURLTypes"];
     for (NSDictionary *type in types) {
         if ([@"flk" isEqualToString:[type objectForKey:@"CFBundleURLName"]]) {
-            NSString *scheme = [type objectForKey:@"CFBundleURLSchemes"][0];
-            if (scheme != nil && scheme != NULL && ![scheme isKindOfClass:[NSNull class]] && scheme.length > 0) {
-                return scheme;
+            NSArray *schemes = [type objectForKey:@"CFBundleURLSchemes"];
+            if (schemes != nil && schemes != NULL && ![schemes isEqual:[NSNull null]] && schemes.count > 0) {
+                for (NSString *scheme in schemes) {
+                    if (scheme == nil || scheme == NULL || [scheme isEqual:[NSNull null]] || scheme.length == 0) {
+                        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"flk scheme 不能为空" userInfo:nil];
+                    }
+                }
+                return schemes;
             }
         }
     }
@@ -49,8 +54,13 @@
 }
 
 - (BOOL)isFLKURL:(NSURL *)url {
-    NSString *scheme = [self getFLKURLScheme];
-    return [scheme isEqualToString:url.scheme];
+    NSArray *schemes = [self getFLKURLSchemes];
+    for (NSString *scheme in schemes) {
+        if ([scheme isEqualToString:url.scheme]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - AppDelegate

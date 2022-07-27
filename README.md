@@ -17,6 +17,8 @@ Flutter plugin for App/Deep Link.
         <category android:name="${applicationId}.link_kit.category.FLK"/>
         <!-- scheme 为必选项，可自定义 -->
         <data android:scheme="flk"/>
+        <!-- 可定义多个 -->
+        <data android:scheme="flks"/>
     </intent-filter>
 </activity>
 ```
@@ -25,6 +27,7 @@ Flutter plugin for App/Deep Link.
 
 ```shell
 adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flk://link.kit/power"
+adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flks://link.kit/power"
 ```
 
 ## iOS
@@ -44,6 +47,8 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
         <array>
             <!-- scheme 为必选项，可自定义 -->
             <string>flk</string>
+            <!-- 可定义多个 -->
+            <string>flks</string>
         </array>
     </dict>
 </array>
@@ -53,4 +58,5 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 
 ```shell
 xcrun simctl openurl booted flk://link.kit/power
+xcrun simctl openurl booted flks://link.kit/power
 ```
