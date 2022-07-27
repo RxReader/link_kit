@@ -24,9 +24,7 @@ Flutter plugin for App/Deep Link.
 * 测试
 
 ```shell
-adb shell am start -a android.intent.action.VIEW \
-    -c android.intent.category.BROWSABLE \
-    -d "flk://link.kit/power"
+adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flk://link.kit/power"
 ```
 
 ## iOS

@@ -18,7 +18,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String? _initialLink;
+  String? _link;
   StreamSubscription<String>? _linkClickSubs;
 
   @override
@@ -29,13 +29,16 @@ class _MyAppState extends State<MyApp> {
         print('initialLink: $value');
       }
       setState(() {
-        _initialLink = value;
+        _link = value;
       });
     });
     _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
       if (kDebugMode) {
         print('linkClick: $event');
       }
+      setState(() {
+        _link = event;
+      });
     });
   }
 
@@ -53,7 +56,7 @@ class _MyAppState extends State<MyApp> {
           title: Text('Link Kit'),
         ),
         body: Center(
-          child: Text(_initialLink ?? ''),
+          child: Text(_link ?? ''),
         ),
       ),
     );
