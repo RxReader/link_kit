@@ -27,6 +27,8 @@ Flutter plugin for App/Deep Link.
 
 ```shell
 adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flk://link.kit/power"
+```
+```shell
 adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flks://link.kit/power"
 ```
 
@@ -58,6 +60,8 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 
 ```shell
 xcrun simctl openurl booted flk://link.kit/power
+```
+```shell
 xcrun simctl openurl booted flks://link.kit/power
 ```
 
