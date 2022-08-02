@@ -4,6 +4,12 @@ Flutter plugin for Deep Link/App Link/Universal Links.
 
 ## Android
 
+* 文档
+
+[创建指向应用内容的深层链接](https://developer.android.com/training/app-links/deep-linking)
+[添加 Android 应用链接](https://developer.android.com/studio/write/app-link-indexing.html)
+[simonmarquis/Android App Linking](https://simonmarquis.github.io/Android-App-Linking/)
+
 * 配置
 
 ```xml
@@ -48,9 +54,14 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 
 ```shell
 # App Link
+adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "https://help.link.kit/power"
 ```
 
 ## iOS
+
+* 文档
+
+[Support Universal Links](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html)
 
 * 配置
 
@@ -87,7 +98,7 @@ post_install do |installer|
 
         # Universal Links
         # FLK_UNIVERSAL_LINK 可自定义，含 host/path，host 与 applinks 的 domain 保持一致
-        'FLK_UNIVERSAL_LINK=@\"help.link.kit/flk\"',
+        'FLK_UNIVERSAL_LINK=@\"help.link.kit/power/\"',
       ]
     end 
     # End of the link_kit configuration
@@ -109,6 +120,7 @@ xcrun simctl openurl booted flks://link.kit/power
 
 ```shell
 # Universal Links
+xcrun simctl openurl booted https://help.link.kit/power/action?abc=xyz
 ```
 
 ## Flutter

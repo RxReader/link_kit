@@ -42,7 +42,7 @@ post_install do |installer|
 
         # Universal Links
         # FLK_UNIVERSAL_LINK 可自定义，含 host/path，host 与 applinks 的 domain 保持一致
-        'FLK_UNIVERSAL_LINK=@\"help.link.kit/flk\"',
+        'FLK_UNIVERSAL_LINK=@\"help.link.kit/power/\"',
       ]
     end
     # End of the link_kit configuration
