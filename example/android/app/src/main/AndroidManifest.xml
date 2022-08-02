@@ -24,7 +24,8 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <intent-filter android:autoVerify="false">
+            <!-- Deep Link -->
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -34,6 +35,16 @@
                 <data android:scheme="flk"/>
                 <!-- 可定义多个 -->
                 <data android:scheme="flks"/>
+            </intent-filter>
+            <!-- App Link -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <!-- 固定标志 -->
+                <category android:name="${applicationId}.link_kit.category.FLK"/>
+                <!-- scheme/host 为必选项，host 可自定义 -->
+                <data android:scheme="https" android:host="link.kit"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

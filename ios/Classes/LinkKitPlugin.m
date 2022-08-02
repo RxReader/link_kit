@@ -34,7 +34,7 @@
     }
 }
 
-- (NSArray *)getFLKURLSchemes {
+- (NSArray *)getFLKDeepLinkSchemes {
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
     NSArray *types = [infoDic objectForKey:@"CFBundleURLTypes"];
     for (NSDictionary *type in types) {
@@ -53,8 +53,8 @@
     @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"未配置 flk scheme" userInfo:nil];
 }
 
-- (BOOL)isFLKURL:(NSURL *)url {
-    NSArray *schemes = [self getFLKURLSchemes];
+- (BOOL)isFLKDeepLink:(NSURL *)url {
+    NSArray *schemes = [self getFLKDeepLinkSchemes];
     for (NSString *scheme in schemes) {
         if ([scheme isEqualToString:url.scheme]) {
             return YES;
@@ -68,7 +68,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSURL *url = (NSURL *)launchOptions[UIApplicationLaunchOptionsURLKey];
     if (url != nil && url != NULL && ![url isEqual:[NSNull null]]) {
-        if ([self isFLKURL:url]) {
+        if ([self isFLKDeepLink:url]) {
             _initialLink = url.absoluteString;
             return YES;
         }
@@ -77,20 +77,20 @@
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return [self handleLinkClickEvent:url];
+    return [self handleDeepLinkClickEvent:url];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
-    return [self handleLinkClickEvent:url];
+    return [self handleDeepLinkClickEvent:url];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [self handleLinkClickEvent:url];
+    return [self handleDeepLinkClickEvent:url];
 }
 
-- (BOOL)handleLinkClickEvent:(NSURL *)url {
+- (BOOL)handleDeepLinkClickEvent:(NSURL *)url {
     if (url != nil && url != NULL && ![url isEqual:[NSNull null]]) {
-        if ([self isFLKURL:url]) {
+        if ([self isFLKDeepLink:url]) {
             if (_linkClickEventHandler != nil) {
                 [_linkClickEventHandler addEvent:url.absoluteString];
             }
@@ -99,6 +99,51 @@
     }
     return NO;
 }
+
+#ifdef FLK_UNIVERSAL_LINK
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nonnull))restorationHandler {
+    return [self handleUniversalLinkClickEvent:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+}
+
+- (BOOL)handleUniversalLinkClickEvent:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nonnull))restorationHandler {
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        NSURL *url = userActivity.webpageURL;
+        if ([self isFLKUniversalLink:url]) {
+            _initialLink = url.absoluteString;
+            // TODO: 区分
+            if (_linkClickEventHandler != nil) {
+                [_linkClickEventHandler addEvent:url.absoluteString];
+            }
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSURL *)getFLKUniversalLink {
+    if (FLK_UNIVERSAL_LINK.length == 0) {
+        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"FLK_UNIVERSAL_LINK 不能为空" userInfo:nil];
+    }
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"https://", FLK_UNIVERSAL_LINK]];
+    if (url.host == nil || url.host == NULL || [url.host isEqual:[NSNull null]] || url.host.length == 0) {
+        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"FLK_UNIVERSAL_LINK 的 host 不能为空" userInfo:nil];
+    }
+    if (url.path == nil || url.path == NULL || [url.path isEqual:[NSNull null]] || url.path.length == 0) {
+        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"FLK_UNIVERSAL_LINK 的 path 不能为空" userInfo:nil];
+    }
+    return url;
+}
+
+- (BOOL)isFLKUniversalLink:(NSURL *)url {
+    NSURL *universalLink = [self getFLKUniversalLink];
+    if ([url.host isEqualToString:universalLink.host] && [url.path hasPrefix:universalLink.path]) {
+        return YES;
+    }
+    return NO;
+}
+
+#endif
 
 @end
 

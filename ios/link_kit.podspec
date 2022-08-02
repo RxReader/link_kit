@@ -9,9 +9,9 @@ library_version = pubspec['version'].gsub('+', '-')
 Pod::Spec.new do |s|
   s.name             = 'link_kit'
   s.version          = library_version
-  s.summary          = 'Flutter plugin for App/Deep Link.'
+  s.summary          = 'Flutter plugin for Deep Link/App Link/Universal Links.'
   s.description      = <<-DESC
-Flutter plugin for App/Deep Link.
+Flutter plugin for Deep Link/App Link/Universal Links.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
