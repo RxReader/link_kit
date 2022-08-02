@@ -1,6 +1,7 @@
 #import "LinkKitPlugin.h"
 
 @implementation LinkKitPlugin {
+    BOOL _isRunning;
     LinkKitLinkClickEventHandler *_linkClickEventHandler;
     NSString *_initialLink;
 }
@@ -20,6 +21,7 @@
 - (instancetype)initWithLinkClickEventHandler:(LinkKitLinkClickEventHandler *)linkClickEventHandler {
     self = [super init];
     if (self) {
+        _isRunning = NO;
         _linkClickEventHandler = linkClickEventHandler;
         _initialLink = nil;
     }
@@ -28,6 +30,7 @@
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     if ([@"getInitialLink" isEqualToString:call.method]) {
+        _isRunning = YES;
         result(_initialLink);
     } else {
         result(FlutterMethodNotImplemented);
@@ -110,10 +113,12 @@
     if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
         NSURL *url = userActivity.webpageURL;
         if ([self isFLKUniversalLink:url]) {
-            _initialLink = url.absoluteString;
-            // TODO: 区分
-            if (_linkClickEventHandler != nil) {
-                [_linkClickEventHandler addEvent:url.absoluteString];
+            if (!_isRunning) {
+                _initialLink = url.absoluteString;
+            } else {
+                if (_linkClickEventHandler != nil) {
+                    [_linkClickEventHandler addEvent:url.absoluteString];
+                }
             }
             return YES;
         }

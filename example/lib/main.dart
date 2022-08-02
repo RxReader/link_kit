@@ -24,20 +24,20 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
-      if (kDebugMode) {
-        print('linkClick: $event');
-      }
-      setState(() {
-        _link = event;
-      });
-    });
     Link.instance.getInitialLink().then((String? value) {
       if (kDebugMode) {
         print('initialLink: $value');
       }
       setState(() {
         _link = value;
+      });
+    });
+    _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
+      if (kDebugMode) {
+        print('linkClick: $event');
+      }
+      setState(() {
+        _link = event;
       });
     });
   }
