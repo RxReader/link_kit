@@ -36,7 +36,7 @@
                 <!-- 可定义多个 -->
                 <data android:scheme="flks"/>
             </intent-filter>
-            <!-- App Link -->
+            <!-- App Link 可不配置 -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

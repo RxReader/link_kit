@@ -40,7 +40,7 @@ post_install do |installer|
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
 
-        # Universal Links
+        # Universal Links 可不配置
         # FLK_UNIVERSAL_LINK 可自定义，含 host/path，host 与 applinks 的 domain 保持一致
         'FLK_UNIVERSAL_LINK=@\"help.link.kit/power/\"',
       ]

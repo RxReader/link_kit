@@ -27,7 +27,7 @@ Flutter plugin for Deep Link/App Link/Universal Links.
         <!-- 可定义多个 -->
         <data android:scheme="flks"/>
     </intent-filter>
-    <!-- App Link -->
+    <!-- App Link，可不配置 -->
     <intent-filter android:autoVerify="true">
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
@@ -96,7 +96,7 @@ post_install do |installer|
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
 
-        # Universal Links
+        # Universal Links 可不配置
         # FLK_UNIVERSAL_LINK 可自定义，含 host/path，host 与 applinks 的 domain 保持一致
         'FLK_UNIVERSAL_LINK=@\"help.link.kit/power/\"',
       ]
