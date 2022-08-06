@@ -4,13 +4,13 @@ Flutter plugin for Deep Link/App Link/Universal Links.
 
 ## Android
 
-* 文档
+#### 文档
 
-[创建指向应用内容的深层链接](https://developer.android.com/training/app-links/deep-linking)
-[添加 Android 应用链接](https://developer.android.com/studio/write/app-link-indexing.html)
-[simonmarquis/Android App Linking](https://simonmarquis.github.io/Android-App-Linking/)
+* [创建指向应用内容的深层链接](https://developer.android.com/training/app-links/deep-linking)
+* [添加 Android 应用链接](https://developer.android.com/studio/write/app-link-indexing.html)
+* [simonmarquis/Android App Linking](https://simonmarquis.github.io/Android-App-Linking/)
 
-* 配置
+#### 配置
 
 ```xml
 <activity
@@ -40,7 +40,7 @@ Flutter plugin for Deep Link/App Link/Universal Links.
 </activity>
 ```
 
-* 测试
+#### 测试
 
 ```shell
 # Deep Link
@@ -59,11 +59,11 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 
 ## iOS
 
-* 文档
+#### 文档
 
 [Support Universal Links](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html)
 
-* 配置
+#### 配置
 
 ```xml
 <!-- Deep Link -->
@@ -106,7 +106,7 @@ post_install do |installer|
 end
 ```
 
-* 测试
+#### 测试
 
 ```shell
 # Deep Link
