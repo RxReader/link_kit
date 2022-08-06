@@ -9,6 +9,7 @@ Flutter plugin for Deep Link/App Link/Universal Links.
 * [创建指向应用内容的深层链接](https://developer.android.com/training/app-links/deep-linking)
 * [添加 Android 应用链接](https://developer.android.com/studio/write/app-link-indexing.html)
 * [simonmarquis/Android App Linking](https://simonmarquis.github.io/Android-App-Linking/)
+* [Statement List Generator and Tester](https://developers.google.com/digital-asset-links/tools/generator)
 
 #### 配置
 
