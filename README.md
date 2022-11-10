@@ -146,5 +146,4 @@ xcrun simctl openurl booted https://help.link.kit/power/action?abc=xyz
         _link = value;
       });
     });
-
 ```
