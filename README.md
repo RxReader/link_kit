@@ -35,7 +35,7 @@ Flutter plugin for Deep Link/App Link/Universal Links.
         <category android:name="android.intent.category.BROWSABLE"/>
         <!-- 固定标志 -->
         <category android:name="${applicationId}.link_kit.category.FLK"/>
-        <!-- scheme/host 为必选项；host 与 applinks 的 domain 保持一致；path 为可选项，可设置以保持与 iOS 的 Universal Links 一致 -->
+        <!-- scheme/host 为必选项；host 与 applinks 的 domain 保持一致；path/pathPattern/pathPrefix 为可选项，可设置以保持与 iOS 的 Universal Links 一致 -->
         <data android:scheme="https" android:host="help.link.kit"/>
     </intent-filter>
 </activity>
@@ -127,14 +127,6 @@ xcrun simctl openurl booted https://help.link.kit/power/action?abc=xyz
 ## Flutter
 
 ```dart
-    Link.instance.getInitialLink().then((String? value) {
-      if (kDebugMode) {
-        print('initialLink: $value');
-      }
-      setState(() {
-        _link = value;
-      });
-    });
     _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
       if (kDebugMode) {
         print('linkClick: $event');
@@ -143,4 +135,16 @@ xcrun simctl openurl booted https://help.link.kit/power/action?abc=xyz
         _link = event;
       });
     });
+    // ⚠️⚠️⚠️
+    // 因为 Android 层实现调用了 queryIntentActivities，会被（小米）误判【获取安装列表】
+    // 所以 getInitialLink 必须在同意「隐私协议」后才能调用
+    Link.instance.getInitialLink().then((String? value) {
+      if (kDebugMode) {
+        print('initialLink: $value');
+      }
+      setState(() {
+        _link = value;
+      });
+    });
+
 ```
