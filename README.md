@@ -127,6 +127,9 @@ xcrun simctl openurl booted https://help.link.kit/power/action?abc=xyz
 ## Flutter
 
 ```dart
+    // ⚠️⚠️⚠️
+    // 因为 Android 层实现调用了 queryIntentActivities，会被（小米）误判【获取安装列表】
+    // 所以 linkClickStream 和 getInitialLink 必须在同意「隐私协议」后才能调用
     _linkClickSubs = Link.instance.linkClickStream().listen((String event) {
       if (kDebugMode) {
         print('linkClick: $event');
@@ -135,9 +138,6 @@ xcrun simctl openurl booted https://help.link.kit/power/action?abc=xyz
         _link = event;
       });
     });
-    // ⚠️⚠️⚠️
-    // 因为 Android 层实现调用了 queryIntentActivities，会被（小米）误判【获取安装列表】
-    // 所以 getInitialLink 必须在同意「隐私协议」后才能调用
     Link.instance.getInitialLink().then((String? value) {
       if (kDebugMode) {
         print('initialLink: $value');

@@ -2,6 +2,7 @@
 
 * Android App Links
 * iOS Universal Links
+* Android - 小米 queryIntentActivities
 
 ## 0.0.2
 

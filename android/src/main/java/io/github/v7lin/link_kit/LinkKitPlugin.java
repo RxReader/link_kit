@@ -105,9 +105,9 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
 
     @Override
     public boolean onNewIntent(@NonNull Intent intent) {
-        if (isFLKIntent(intent)) {
-            final String link = intent.getDataString();
-            if (linkClickEventHandler != null) {
+        if (linkClickEventHandler != null) {
+            if (isFLKIntent(intent)) {
+                final String link = intent.getDataString();
                 linkClickEventHandler.addEvent(link);
             }
         }
