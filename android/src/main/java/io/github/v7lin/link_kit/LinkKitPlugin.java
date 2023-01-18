@@ -62,12 +62,22 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
 
         @Override
         public void onListen(Object arguments, EventChannel.EventSink events) {
+            if (this.events != null) {
+                return;
+            }
             this.events = events;
         }
 
         @Override
         public void onCancel(Object arguments) {
+            if (this.events == null) {
+                return;
+            }
             this.events = null;
+        }
+
+        public boolean isActive() {
+            return this.events != null;
         }
 
         public void addEvent(String event) {
@@ -105,7 +115,7 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
 
     @Override
     public boolean onNewIntent(@NonNull Intent intent) {
-        if (linkClickEventHandler != null) {
+        if (linkClickEventHandler != null && linkClickEventHandler.isActive()) {
             if (isFLKIntent(intent)) {
                 final String link = intent.getDataString();
                 linkClickEventHandler.addEvent(link);
