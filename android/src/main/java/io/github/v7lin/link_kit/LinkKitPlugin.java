@@ -147,10 +147,13 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
         final Intent copy = new Intent(intent);
         copy.setComponent(null);// 必须设置为空，不然无法获取 ResolveInfo 的 IntentFilter
         final List<ResolveInfo> infos = applicationContext.getPackageManager().queryIntentActivities(copy, PackageManager.GET_RESOLVED_FILTER);
-        if (infos.size() == 1) {
-            final ResolveInfo info = infos.get(0);
+        for (int i = 0; i < infos.size(); i++) {
+            final ResolveInfo info = infos.get(i);
             final IntentFilter filter = info.filter;
-            return filter != null && filter.hasCategory(applicationContext.getPackageName() + ".link_kit.category.FLK");
+            if (filter == null) continue;
+            if (filter.hasCategory(applicationContext.getPackageName() + ".link_kit.category.FLK")) {
+                return true;
+            }
         }
         return false;
     }
