@@ -1,3 +1,9 @@
+## 1.0.0
+
+* break change
+* Android: 提高新手配置友好度，不在需要手动配置
+* iOS: 提高新手配置友好度，不在需要手动配置
+
 ## 0.0.3
 
 * Android App Links

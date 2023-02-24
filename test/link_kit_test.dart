@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:link_kit/src/link.dart';
 import 'package:link_kit/src/link_kit_method_channel.dart';
 import 'package:link_kit/src/link_kit_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -29,6 +28,6 @@ void main() {
     final MockLinkKitPlatform fakePlatform = MockLinkKitPlatform();
     LinkKitPlatform.instance = fakePlatform;
 
-    expect(await Link.instance.getInitialLink(), null);
+    expect(await LinkKitPlatform.instance.getInitialLink(), null);
   });
 }
