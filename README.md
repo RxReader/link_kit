@@ -11,51 +11,16 @@ Flutter plugin for Deep Link/App Link/Universal Links.
 * [simonmarquis/Android App Linking](https://simonmarquis.github.io/Android-App-Linking/)
 * [Statement List Generator and Tester](https://developers.google.com/digital-asset-links/tools/generator)
 
-#### 配置
-
-```xml
-<activity
-    android:name=".MainActivity">
-    <!-- Deep Link -->
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <!-- 固定标志 -->
-        <category android:name="${applicationId}.link_kit.category.FLK"/>
-        <!-- scheme 为必选项，可自定义 -->
-        <data android:scheme="flk"/>
-        <!-- 可定义多个 -->
-        <data android:scheme="flks"/>
-    </intent-filter>
-    <!-- App Link，可不配置 -->
-    <intent-filter android:autoVerify="true">
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <!-- 固定标志 -->
-        <category android:name="${applicationId}.link_kit.category.FLK"/>
-        <!-- scheme/host 为必选项；host 与 applinks 的 domain 保持一致；path/pathPattern/pathPrefix 为可选项，可设置以保持与 iOS 的 Universal Links 一致 -->
-        <data android:scheme="https" android:host="help.link.kit"/>
-    </intent-filter>
-</activity>
-```
-
 #### 测试
 
 ```shell
 # Deep Link
-adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flk://link.kit/power"
-```
-
-```shell
-# Deep Link
-adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flks://link.kit/power"
+adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "flk:///power"
 ```
 
 ```shell
 # App Link
-adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "https://help.link.kit/power"
+adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "https://www.yourdomain.com/universal_link/example_app/link_kit/power"
 ```
 
 ## iOS

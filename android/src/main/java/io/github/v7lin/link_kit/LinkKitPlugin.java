@@ -10,6 +10,7 @@ import android.content.pm.ResolveInfo;
 import androidx.annotation.NonNull;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -34,6 +35,7 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     private LinkClickEventHandler linkClickEventHandler;
     private Context applicationContext;
     private ActivityPluginBinding activityPluginBinding;
+    private final AtomicBoolean handleInitialWXReqFlag = new AtomicBoolean(false);
 
     // --- FlutterPlugin
 
@@ -115,11 +117,15 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
 
     @Override
     public boolean onNewIntent(@NonNull Intent intent) {
-        if (linkClickEventHandler != null && linkClickEventHandler.isActive()) {
-            if (isFLKIntent(intent)) {
-                final String link = intent.getDataString();
-                linkClickEventHandler.addEvent(link);
+        final Intent extra = LinkCallbackActivity.extraCallback(intent);
+        if (extra != null) {
+            if (linkClickEventHandler != null && linkClickEventHandler.isActive()) {
+                if (isFLKIntent(extra)) {
+                    final String link = extra.getDataString();
+                    linkClickEventHandler.addEvent(link);
+                }
             }
+            return true;
         }
         return false;
     }
@@ -129,21 +135,27 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         if ("getInitialLink".equals(call.method)) {
-            String initialLink = null;
-            final Activity activity = activityPluginBinding.getActivity();
-            if (activity != null) {
-                final Intent intent = activity.getIntent();
-                if (isFLKIntent(intent)) {
-                    initialLink = intent.getDataString();
+            if (handleInitialWXReqFlag.compareAndSet(false, true)) {
+                String initialLink = null;
+                final Activity activity = activityPluginBinding != null ? activityPluginBinding.getActivity() : null;
+                if (activity != null) {
+                    final Intent extra = LinkCallbackActivity.extraCallback(activity.getIntent());
+                    if (extra != null) {
+                        if (isFLKIntent(extra)){
+                            initialLink = extra.getDataString();
+                        }
+                    }
                 }
+                result.success(initialLink);
+            } else {
+                result.error("FAILED", null, null);
             }
-            result.success(initialLink);
         } else {
             result.notImplemented();
         }
     }
 
-    private boolean isFLKIntent(Intent intent) {
+    private boolean isFLKIntent(@NonNull Intent intent) {
         final Intent copy = new Intent(intent);
         copy.setComponent(null);// 必须设置为空，不然无法获取 ResolveInfo 的 IntentFilter
         copy.setPackage(applicationContext.getPackageName());

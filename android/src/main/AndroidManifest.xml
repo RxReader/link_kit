@@ -1,3 +1,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="io.github.v7lin.link_kit">
+    package="io.github.v7lin.link_kit">
+
+    <application>
+        <activity
+            android:name=".LinkCallbackActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/link_kit.Theme.Transparent">
+            <!-- Deep Link -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <!-- 固定标志 -->
+                <category android:name="${applicationId}.link_kit.category.FLK"/>
+                <!-- scheme 为必选项，可自定义，可定义多个 -->
+                <!--<data android:scheme="flk"/>-->
+                <!--<data android:scheme="flks"/>-->
+                <data android:scheme="${DEEPLINK_SCHEME}"/>
+            </intent-filter>
+        </activity>
+    </application>
 </manifest>

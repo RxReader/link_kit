@@ -82,3 +82,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+link_kit:
+  deep_link: flk:///
+  android:
+    app_link: https://www.yourdomain.com/universal_link/example_app/link_kit/
+  ios:
+    universal_link: https://www.yourdomain.com/universal_link/example_app/link_kit/

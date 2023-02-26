@@ -24,7 +24,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _linkClickSubs = LinkKitPlatform.instance.linkClickStream().listen((String event) {
+    _linkClickSubs =
+        LinkKitPlatform.instance.linkClickStream().listen((String event) {
       if (kDebugMode) {
         print('linkClick: $event');
       }

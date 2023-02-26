@@ -16,6 +16,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath 'org.yaml:snakeyaml:1.17'
     }
 }
 
@@ -36,7 +37,35 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    resourcePrefix 'link_kit'
+
+    File flutter_project_dir = rootProject.projectDir.parentFile
+    def cfg = new org.yaml.snakeyaml.Yaml().load(new File(flutter_project_dir, 'pubspec.yaml').text)
+    def deep_link = cfg.link_kit?.deep_link?.with { URI.create(it) }
+    def app_link = cfg.link_kit?.android?.app_link?.with { URI.create(it) }
+
     defaultConfig {
         minSdkVersion 16
+
+        manifestPlaceholders += [
+                DEEPLINK_SCHEME: deep_link?.scheme ?: '',
+        ]
+        if (app_link != null) {
+            manifestPlaceholders += [
+                    APPLINK_SCHEME: app_link.scheme,
+                    APPLINK_HOST: app_link.host,
+                    APPLINK_PATH: "${app_link.path}.*",
+            ]
+        }
+    }
+
+    if (app_link != null) {
+        flavorDimensions 'vendor'
+
+        productFlavors {
+            vendor {
+                dimension 'vendor'
+            }
+        }
     }
 }
