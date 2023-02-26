@@ -2,6 +2,7 @@
 
 @implementation LinkKitPlugin {
     BOOL _isRunning;
+    BOOL _handleInitialFlag;
     LinkKitLinkClickEventHandler *_linkClickEventHandler;
     NSString *_initialLink;
 }
@@ -22,6 +23,7 @@
     self = [super init];
     if (self) {
         _isRunning = NO;
+        _handleInitialFlag = NO;
         _linkClickEventHandler = linkClickEventHandler;
         _initialLink = nil;
     }
@@ -30,34 +32,20 @@
 
 - (void)handleMethodCall:(FlutterMethodCall *)call result:(FlutterResult)result {
     if ([@"getInitialLink" isEqualToString:call.method]) {
-        _isRunning = YES;
-        result(_initialLink);
+        if (!_handleInitialFlag) {
+            _handleInitialFlag = YES;
+            _isRunning = YES;
+            result(_initialLink);
+        } else {
+            result([FlutterError errorWithCode:@"FAILED" message:nil details:nil]);
+        }
     } else {
         result(FlutterMethodNotImplemented);
     }
 }
 
-- (NSArray *)getFLKDeepLinkSchemes {
-    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
-    NSArray *types = [infoDic objectForKey:@"CFBundleURLTypes"];
-    for (NSDictionary *type in types) {
-        if ([@"flk" isEqualToString:[type objectForKey:@"CFBundleURLName"]]) {
-            NSArray *schemes = [type objectForKey:@"CFBundleURLSchemes"];
-            if (schemes != nil && schemes != NULL && ![schemes isEqual:[NSNull null]] && schemes.count > 0) {
-                for (NSString *scheme in schemes) {
-                    if (scheme == nil || scheme == NULL || [scheme isEqual:[NSNull null]] || scheme.length == 0) {
-                        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"flk scheme 不能为空" userInfo:nil];
-                    }
-                }
-                return schemes;
-            }
-        }
-    }
-    @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"未配置 flk scheme" userInfo:nil];
-}
-
 - (BOOL)isFLKDeepLink:(NSURL *)url {
-    NSArray *schemes = [self getFLKDeepLinkSchemes];
+    NSArray *schemes = @[ LINK_KIT_DEEP_LINK ];
     for (NSString *scheme in schemes) {
         if ([scheme isEqualToString:url.scheme]) {
             return YES;
@@ -103,7 +91,7 @@
     return NO;
 }
 
-#ifdef FLK_UNIVERSAL_LINK
+#ifdef LINK_KIT_UNIVERSAL_LINK
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *_Nonnull))restorationHandler {
     return [self handleUniversalLinkClickEvent:application continueUserActivity:userActivity restorationHandler:restorationHandler];
@@ -127,15 +115,12 @@
 }
 
 - (NSURL *)getFLKUniversalLink {
-    if (FLK_UNIVERSAL_LINK.length == 0) {
-        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"FLK_UNIVERSAL_LINK 不能为空" userInfo:nil];
-    }
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", @"https://", FLK_UNIVERSAL_LINK]];
+    NSURL *url = [NSURL URLWithString:LINK_KIT_UNIVERSAL_LINK];
     if (url.host == nil || url.host == NULL || [url.host isEqual:[NSNull null]] || url.host.length == 0) {
-        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"FLK_UNIVERSAL_LINK 的 host 不能为空" userInfo:nil];
+        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"LINK_KIT_UNIVERSAL_LINK 的 host 不能为空" userInfo:nil];
     }
     if (url.path == nil || url.path == NULL || [url.path isEqual:[NSNull null]] || url.path.length == 0) {
-        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"FLK_UNIVERSAL_LINK 的 path 不能为空" userInfo:nil];
+        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"LINK_KIT_UNIVERSAL_LINK 的 path 不能为空" userInfo:nil];
     }
     return url;
 }

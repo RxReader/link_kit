@@ -86,6 +86,6 @@ flutter:
 link_kit:
   deep_link: flk:///
   android:
-    app_link: https://www.yourdomain.com/universal_link/example_app/link_kit/
+    app_link: https://www.yourdomain.com/universal_link/example_app/link_kit/ # 可选配置
   ios:
-    universal_link: https://www.yourdomain.com/universal_link/example_app/link_kit/
+    universal_link: https://www.yourdomain.com/universal_link/example_app/link_kit/ # 可选配置

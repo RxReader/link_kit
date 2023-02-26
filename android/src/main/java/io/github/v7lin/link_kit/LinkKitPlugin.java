@@ -35,7 +35,7 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     private LinkClickEventHandler linkClickEventHandler;
     private Context applicationContext;
     private ActivityPluginBinding activityPluginBinding;
-    private final AtomicBoolean handleInitialWXReqFlag = new AtomicBoolean(false);
+    private final AtomicBoolean handleInitialFlag = new AtomicBoolean(false);
 
     // --- FlutterPlugin
 
@@ -135,7 +135,7 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         if ("getInitialLink".equals(call.method)) {
-            if (handleInitialWXReqFlag.compareAndSet(false, true)) {
+            if (handleInitialFlag.compareAndSet(false, true)) {
                 String initialLink = null;
                 final Activity activity = activityPluginBinding != null ? activityPluginBinding.getActivity() : null;
                 if (activity != null) {

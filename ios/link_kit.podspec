@@ -6,6 +6,24 @@
 pubspec = YAML.load_file(File.join('..', 'pubspec.yaml'))
 library_version = pubspec['version'].gsub('+', '-')
 
+current_dir = Dir.pwd
+calling_dir = File.dirname(__FILE__)
+project_dir = calling_dir.slice(0..(calling_dir.index('/.symlinks')))
+flutter_project_dir = calling_dir.slice(0..(calling_dir.index('/ios/.symlinks')))
+cfg = YAML.load_file(File.join(flutter_project_dir, 'pubspec.yaml'))
+if cfg['link_kit'] && cfg['link_kit']['deep_link']
+    deep_link = cfg['link_kit']['deep_link']
+    universal_link = nil
+    if cfg['link_kit']['ios']
+        universal_link = cfg['link_kit']['ios']['universal_link']
+    end
+    options = ""
+    if universal_link
+        options = "-u #{universal_link}"
+    end
+    system("ruby #{current_dir}/link_setup.rb -d #{deep_link} #{options} -p #{project_dir} -n Runner.xcodeproj")
+end
+
 Pod::Spec.new do |s|
   s.name             = 'link_kit'
   s.version          = library_version
@@ -19,6 +37,19 @@ Pod::Spec.new do |s|
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
+
+  # s.default_subspecs = :none
+  s.default_subspec = 'vendor'
+
+  s.subspec 'vendor' do |sp|
+    definitions_options = ""
+    if universal_link
+        definitions_options = " LINK_KIT_UNIVERSAL_LINK=\\@\\\"#{universal_link}\\\""
+    end
+    sp.pod_target_xcconfig = {
+      'GCC_PREPROCESSOR_DEFINITIONS' => "LINK_KIT_DEEP_LINK=\\@\\\"#{deep_link}\\\""
+    }
+  end
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

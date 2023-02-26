@@ -34,17 +34,5 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-
-    # Start of the link_kit configuration
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
-        '$(inherited)',
-
-        # Universal Links 可不配置
-        # FLK_UNIVERSAL_LINK 可自定义，含 host/path，host 与 applinks 的 domain 保持一致
-        'FLK_UNIVERSAL_LINK=@\"help.link.kit/power/\"',
-      ]
-    end
-    # End of the link_kit configuration
   end
 end
