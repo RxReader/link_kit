@@ -33,7 +33,7 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 
 ```shell
 # Deep Link
-xcrun simctl openurl booted flk://link.kit/power
+xcrun simctl openurl booted flk:///power
 ```
 
 ```shell

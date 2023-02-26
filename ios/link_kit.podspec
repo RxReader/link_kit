@@ -44,10 +44,10 @@ Pod::Spec.new do |s|
   s.subspec 'vendor' do |sp|
     definitions_options = ""
     if universal_link
-        definitions_options = " LINK_KIT_UNIVERSAL_LINK=\\@\\\"#{universal_link}\\\""
+        definitions_options = " LINK_KIT_UNIVERSAL_LINK=\\@\\\"#{universal_link.gsub('/', '\/')}\\\""
     end
     sp.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => "LINK_KIT_DEEP_LINK=\\@\\\"#{deep_link}\\\""
+      'GCC_PREPROCESSOR_DEFINITIONS' => "LINK_KIT_DEEP_LINK_SCHEME=\\@\\\"#{URI.parse(deep_link).scheme}\\\"#{definitions_options}"
     }
   end
 

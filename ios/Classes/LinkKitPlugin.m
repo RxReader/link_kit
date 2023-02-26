@@ -45,7 +45,7 @@
 }
 
 - (BOOL)isFLKDeepLink:(NSURL *)url {
-    NSArray *schemes = @[ LINK_KIT_DEEP_LINK ];
+    NSArray *schemes = @[ LINK_KIT_DEEP_LINK_SCHEME ];
     for (NSString *scheme in schemes) {
         if ([scheme isEqualToString:url.scheme]) {
             return YES;
