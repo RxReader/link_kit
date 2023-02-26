@@ -2,6 +2,11 @@
 
 Flutter plugin for Deep Link/App Link/Universal Links.
 
+## ⚠️⚠️⚠️
+
+* link_kit 1.0.0 配置并不与 0.0.x 兼容，请手动删除 0.0.x 配置
+* 因为 Android 的 manifestPlaceholders 能力有限，又懒得写需要兼容各版本的 Gradle 插件，所以默认只支持配置一个 DeepLink/AppLink/UniversalLink
+
 ## Android
 
 #### 文档
@@ -10,6 +15,13 @@ Flutter plugin for Deep Link/App Link/Universal Links.
 * [添加 Android 应用链接](https://developer.android.com/studio/write/app-link-indexing.html)
 * [simonmarquis/Android App Linking](https://simonmarquis.github.io/Android-App-Linking/)
 * [Statement List Generator and Tester](https://developers.google.com/digital-asset-links/tools/generator)
+
+#### 配置
+
+```
+# 不需要做任何额外接入工作
+# 配置已集成到脚本里
+```
 
 #### 测试
 
@@ -28,6 +40,13 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 #### 文档
 
 [Support Universal Links](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html)
+
+#### 配置
+
+```
+# 不需要做任何额外接入工作
+# 配置已集成到脚本里
+```
 
 #### 测试
 
