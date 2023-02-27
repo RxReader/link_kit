@@ -1,13 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="io.github.v7lin.link_kit">
 
     <application>
         <activity
             android:name=".LinkCallbackActivity">
             <!-- App Link，可不配置 -->
-            <intent-filter android:autoVerify="true"
-                tools:ignore="AppLinkUrlError,ExtraText">
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
