@@ -38,9 +38,6 @@ Pod::Spec.new do |s|
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
 
-  # s.default_subspecs = :none
-  s.default_subspec = 'vendor'
-
   s.subspec 'vendor' do |sp|
     definitions_options = ""
     if universal_link
