@@ -114,20 +114,9 @@
     return NO;
 }
 
-- (NSURL *)getFLKUniversalLink {
-    NSURL *url = [NSURL URLWithString:LINK_KIT_UNIVERSAL_LINK];
-    if (url.host == nil || url.host == NULL || [url.host isEqual:[NSNull null]] || url.host.length == 0) {
-        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"LINK_KIT_UNIVERSAL_LINK 的 host 不能为空" userInfo:nil];
-    }
-    if (url.path == nil || url.path == NULL || [url.path isEqual:[NSNull null]] || url.path.length == 0) {
-        @throw [[NSException alloc] initWithName:@"UnsupportedError" reason:@"LINK_KIT_UNIVERSAL_LINK 的 path 不能为空" userInfo:nil];
-    }
-    return url;
-}
-
 - (BOOL)isFLKUniversalLink:(NSURL *)url {
-    NSURL *universalLink = [self getFLKUniversalLink];
-    if ([url.host isEqualToString:universalLink.host] && [url.path hasPrefix:universalLink.path]) {
+    NSURL *universalLink = [NSURL URLWithString:LINK_KIT_UNIVERSAL_LINK];
+    if ([url.absoluteString hasPrefix:universalLink.absoluteString]) {
         return YES;
     }
     return NO;

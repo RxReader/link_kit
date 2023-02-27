@@ -3,13 +3,12 @@ package io.github.v7lin.link_kit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -119,9 +118,9 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     public boolean onNewIntent(@NonNull Intent intent) {
         final Intent extra = LinkCallbackActivity.extraCallback(intent);
         if (extra != null) {
-            if (linkClickEventHandler != null && linkClickEventHandler.isActive()) {
-                if (isFLKIntent(extra)) {
-                    final String link = extra.getDataString();
+            if (isFLKIntent(extra)) {
+                final String link = extra.getDataString();
+                if (linkClickEventHandler != null) {
                     linkClickEventHandler.addEvent(link);
                 }
             }
@@ -156,14 +155,13 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
     }
 
     private boolean isFLKIntent(@NonNull Intent intent) {
-        final Intent copy = new Intent(intent);
-        copy.setComponent(null);// 必须设置为空，不然无法获取 ResolveInfo 的 IntentFilter
-        copy.setPackage(applicationContext.getPackageName());
-        final List<ResolveInfo> infos = applicationContext.getPackageManager().queryIntentActivities(copy, PackageManager.GET_RESOLVED_FILTER);
-        for (int i = 0; i < infos.size(); i++) {
-            final ResolveInfo info = infos.get(i);
-            final IntentFilter filter = info.filter;
-            if (filter != null && filter.hasCategory(applicationContext.getPackageName() + ".link_kit.category.FLK")) {
+        final Uri data = intent.getData();
+        if (data != null) {
+            if (Arrays.asList(BuildConfig.LINK_KIT_DEEP_LINK_SCHEME).contains(data.getScheme())) {
+                // deep link
+                return true;
+            } else if (data.toString().startsWith(BuildConfig.LINK_KIT_APP_LINK)) {
+                // app link
                 return true;
             }
         }

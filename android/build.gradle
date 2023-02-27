@@ -47,6 +47,9 @@ android {
     defaultConfig {
         minSdkVersion 16
 
+        buildConfigField "String", "LINK_KIT_DEEP_LINK_SCHEME", "\"${deep_link.scheme}\""
+        buildConfigField "String", "LINK_KIT_APP_LINK", "\"${app_link ?: ''}\""
+
         manifestPlaceholders += [
                 DEEP_LINK_SCHEME: deep_link?.scheme ?: '',
         ]

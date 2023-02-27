@@ -12,8 +12,6 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <!-- 固定标志 -->
-                <category android:name="${applicationId}.link_kit.category.FLK"/>
                 <!-- scheme 为必选项，可自定义，可定义多个 -->
                 <!--<data android:scheme="flk"/>-->
                 <!--<data android:scheme="flks"/>-->
