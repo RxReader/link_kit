@@ -132,14 +132,28 @@ link_kit:
     universal_link: https://${your applinks domain}/universal_link/${example_app}/link_kit/ # 可选配置
 ```
 
-#### 安装（仅iOS）
+#### 安装
 
 ```shell
-# step.1 安装必要依赖
+# Android
+# 修改配置后，必须执行 flutter clean 清理中间编译产物 BuildConfig.java
+# step.1 切换工作目录
+cd example/
+# step.2
+flutter clean && flutter pub get
+```
+
+```shell
+# iOS
+# 首次/修改配置后，必须执行 pod install 让配置生效
+# step.0 安装必要依赖
 sudo gem install plist
-# step.2 切换工作目录，插件里为 example/ios/，普通项目为 ios/
-cd example/ios/
+# step.1 切换工作目录
+cd example/
+# step.2
+flutter clean && flutter pub get
 # step.3 执行脚本
+cd ios/
 pod install
 ```
 
