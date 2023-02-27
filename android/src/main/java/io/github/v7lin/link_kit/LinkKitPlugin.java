@@ -160,7 +160,7 @@ public class LinkKitPlugin implements FlutterPlugin, ActivityAware, PluginRegist
             if (Arrays.asList(BuildConfig.LINK_KIT_DEEP_LINK_SCHEME).contains(data.getScheme())) {
                 // deep link
                 return true;
-            } else if (data.toString().startsWith(BuildConfig.LINK_KIT_APP_LINK)) {
+            } else if (!TextUtils.isEmpty(BuildConfig.LINK_KIT_APP_LINK) && data.toString().startsWith(BuildConfig.LINK_KIT_APP_LINK)) {
                 // app link
                 return true;
             }
