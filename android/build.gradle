@@ -48,13 +48,13 @@ android {
         minSdkVersion 16
 
         manifestPlaceholders += [
-                DEEPLINK_SCHEME: deep_link?.scheme ?: '',
+                DEEP_LINK_SCHEME: deep_link?.scheme ?: '',
         ]
         if (app_link != null) {
             manifestPlaceholders += [
-                    APPLINK_SCHEME: app_link.scheme,
-                    APPLINK_HOST: app_link.host,
-                    APPLINK_PATH: "${app_link.path}.*",
+                    APP_LINK_SCHEME: app_link.scheme,
+                    APP_LINK_HOST: app_link.host,
+                    APP_LINK_PATH: "${app_link.path}.*",
             ]
         }
     }

@@ -23,6 +23,33 @@ Flutter plugin for Deep Link/App Link/Universal Links.
 # 配置已集成到脚本里
 ```
 
+* App Links
+
+assetlinks.json - 通过 https://${your applinks domain}/.well-known/assetlinks.json 链接可访问
+
+示例:
+
+https://${your applinks domain}/universal_link/${example_app}/link_kit/
+
+```json
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "your_app_package_name",
+      "sha256_cert_fingerprints": [
+        "your_app_package_fingerprint_sha256"
+      ]
+    }
+  }
+]
+```
+
+> [获取 Android 签名信息](https://github.com/RxReader/wechat_kit#android)
+
 #### 测试
 
 ```shell
@@ -47,6 +74,32 @@ adb shell am start -a android.intent.action.VIEW -c android.intent.category.BROW
 # 不需要做任何额外接入工作
 # 配置已集成到脚本里
 ```
+
+* Universal Links
+
+apple-app-site-association - 通过 https://${your applinks domain}/.well-known/apple-app-site-association 链接可访问
+
+示例:
+
+https://${your applinks domain}/universal_link/${example_app}/link_kit/
+
+```json
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "${your team id}.${your app bundle id}",
+        "paths": [
+          "/universal_link/${example_app}/link_kit/*"
+        ]
+      }
+    ]
+  }
+}
+```
+
+> ⚠️ 很多 SDK 都会用到 universal_link，可为不同 SDK 分配不同的 path 以作区分
 
 #### 测试
 

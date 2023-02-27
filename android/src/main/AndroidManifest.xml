@@ -17,7 +17,7 @@
                 <!-- scheme 为必选项，可自定义，可定义多个 -->
                 <!--<data android:scheme="flk"/>-->
                 <!--<data android:scheme="flks"/>-->
-                <data android:scheme="${DEEPLINK_SCHEME}"/>
+                <data android:scheme="${DEEP_LINK_SCHEME}"/>
             </intent-filter>
         </activity>
     </application>
