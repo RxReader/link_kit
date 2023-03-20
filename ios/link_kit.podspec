@@ -22,6 +22,8 @@ if cfg['link_kit'] && cfg['link_kit']['deep_link']
         options = "-u #{universal_link}"
     end
     system("ruby #{current_dir}/link_setup.rb -d #{deep_link} #{options} -p #{project_dir} -n Runner.xcodeproj")
+else
+    abort("link_kit deep_link is null, add code in pubspec.yaml:\nlink_kit:\n  deep_link: ${your deep link scheme}:///\n  android:\n    app_link: https://${your applinks domain}/universal_link/${example_app}/link_kit/ # 可选配置\n  ios:\n    universal_link: https://${your applinks domain}/universal_link/${example_app}/link_kit/ # 可选配置\n")
 end
 
 Pod::Spec.new do |s|

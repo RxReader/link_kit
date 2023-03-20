@@ -1,6 +1,6 @@
 name: link_kit
 description: Flutter plugin for App/Deep Link.
-version: 1.0.0
+version: 1.0.1
 # author: v7lin <v7lin@qq.com>
 homepage: https://github.com/RxReader/link_kit
 repository: https://github.com/RxReader/link_kit.git
