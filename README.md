@@ -147,7 +147,7 @@ flutter clean && flutter pub get
 # iOS
 # 首次/修改配置后，必须执行 pod install 让配置生效
 # step.0 安装必要依赖
-sudo gem install rexml plist
+sudo gem install plist
 # step.1 切换工作目录
 cd example/
 # step.2
