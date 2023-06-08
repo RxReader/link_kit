@@ -11,19 +11,17 @@ calling_dir = File.dirname(__FILE__)
 project_dir = calling_dir.slice(0..(calling_dir.index('/.symlinks')))
 flutter_project_dir = calling_dir.slice(0..(calling_dir.index('/ios/.symlinks')))
 cfg = YAML.load_file(File.join(flutter_project_dir, 'pubspec.yaml'))
-if cfg['link_kit'] && cfg['link_kit']['deep_link']
+if cfg['link_kit'] && cfg['link_kit']['deep_link'] && URI.parse(cfg['link_kit']['deep_link']).scheme
     deep_link = cfg['link_kit']['deep_link']
     universal_link = nil
+    options = ""
     if cfg['link_kit']['ios']
         universal_link = cfg['link_kit']['ios']['universal_link']
-    end
-    options = ""
-    if universal_link
         options = "-u #{universal_link}"
     end
     system("ruby #{current_dir}/link_setup.rb -d #{deep_link} #{options} -p #{project_dir} -n Runner.xcodeproj")
 else
-    abort("link_kit deep_link is null, add code in pubspec.yaml:\nlink_kit:\n  deep_link: ${your deep link scheme}:///\n  android:\n    app_link: https://${your applinks domain}/universal_link/${example_app}/link_kit/ # 可选配置\n  ios:\n    universal_link: https://${your applinks domain}/universal_link/${example_app}/link_kit/ # 可选配置\n")
+    abort("link_kit deep link is invalid, add code in pubspec.yaml:\nlink_kit:\n  deep_link: ${your deep link scheme}:///\n  android:\n    app_link: https://${your applinks domain}/universal_link/${example_app}/link_kit/ # 可选配置\n  ios:\n    universal_link: https://${your applinks domain}/universal_link/${example_app}/link_kit/ # 可选配置\n")
 end
 
 Pod::Spec.new do |s|

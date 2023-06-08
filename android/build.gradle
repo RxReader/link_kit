@@ -5,6 +5,19 @@ java.util.regex.Matcher versionMatcher = java.util.regex.Pattern.compile("^versi
 versionMatcher.find()
 String library_version = versionMatcher.group(1).replaceAll("\\+", "-")
 
+File flutter_project_dir = rootProject.projectDir.parentFile
+def cfg = new org.yaml.snakeyaml.Yaml().load(new File(flutter_project_dir, 'pubspec.yaml').text)
+def deep_link = cfg.link_kit?.deep_link?.with { URI.create(it) }
+def app_link = cfg.link_kit?.android?.app_link?.with { URI.create(it) }
+if (deep_link == null || deep_link.scheme.isEmpty()) {
+    throw new IllegalArgumentException("link_kit deep link is invalid, add code in pubspec.yaml:\nlink_kit:" +
+            "\n  deep_link: \${your deep link scheme}:///" +
+            "\n  android:" +
+            "\n    app_link: https://\${your applinks domain}/universal_link/\${example_app}/link_kit/ # 可选配置" +
+            "\n  ios:" +
+            "\n    universal_link: universal_link: https://\${your applinks domain}/universal_link/\${example_app}/link_kit/ # 可选配置")
+}
+
 group 'io.github.v7lin.link_kit'
 version library_version
 
@@ -39,11 +52,6 @@ android {
 
     resourcePrefix 'link_kit'
 
-    File flutter_project_dir = rootProject.projectDir.parentFile
-    def cfg = new org.yaml.snakeyaml.Yaml().load(new File(flutter_project_dir, 'pubspec.yaml').text)
-    def deep_link = cfg.link_kit?.deep_link?.with { URI.create(it) }
-    def app_link = cfg.link_kit?.android?.app_link?.with { URI.create(it) }
-
     defaultConfig {
         minSdkVersion 16
 
@@ -51,7 +59,7 @@ android {
         buildConfigField "String", "LINK_KIT_APP_LINK", "\"${app_link ?: ''}\""
 
         manifestPlaceholders += [
-                DEEP_LINK_SCHEME: deep_link?.scheme ?: '',
+                DEEP_LINK_SCHEME: deep_link.scheme,
         ]
         if (app_link != null) {
             manifestPlaceholders += [
